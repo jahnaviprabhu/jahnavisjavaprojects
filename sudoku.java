@@ -12,7 +12,7 @@ class sudoku {
 
         // Choose difficulty level
         System.out.println("Select difficulty level: easy, medium, hard");
-        String level = scanner.nextLine().trim().toLowerCase();
+        String level = scanner.nextLine();
         int emptyCells;
         switch (level) {
             case "easy":
@@ -197,7 +197,7 @@ class sudoku {
     public static void printBoard(int[][] board) {
         for (int row = 0; row < SIZE; row++) {
             if (row % SUBGRID == 0 && row != 0) {
-                System.out.println("------+------+------");
+                System.out.println("----+---------+---------+----");
             }
             for (int col = 0; col < SIZE; col++) {
                 if (col % SUBGRID == 0 && col != 0) {
