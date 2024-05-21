@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-class sudoku {
+class Sudoku {
     private static final int SIZE = 9;
     private static final int SUBGRID = 3;
     private static final int EMPTY = 0;
@@ -9,62 +9,70 @@ class sudoku {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        boolean playAgain;
 
-        // Choose difficulty level
-        System.out.println("Select difficulty level: easy, medium, hard");
-        String level = scanner.nextLine();
-        int emptyCells;
-        switch (level) {
-            case "easy":
-                emptyCells = 20;
-                break;
-            case "medium":
-                emptyCells = 40;
-                break;
-            case "hard":
-                emptyCells = 60;
-                break;
-            default:
-                System.out.println("Invalid level. Defaulting to easy.");
-                emptyCells = 20;
-        }
-
-        int[][] board = generateBoard(emptyCells);
-        printBoard(board);
-
-        while (!isSolved(board)) {
-            System.out.println("Enter your move (row column number), 'answer' to see the solution, or 'exit' to quit:");
-            String input = scanner.nextLine();
-
-            if (input.equalsIgnoreCase("exit")) {
-                System.out.println("Goodbye!");
-                break;
-            } else if (input.equalsIgnoreCase("answer")) {
-                printBoard(solvedBoard);
-                break;
+        do {
+            // Choose difficulty level
+            System.out.println("Select difficulty level: easy, medium, hard");
+            String level = scanner.nextLine().trim().toLowerCase();
+            int emptyCells;
+            switch (level) {
+                case "easy":
+                    emptyCells = 20;
+                    break;
+                case "medium":
+                    emptyCells = 40;
+                    break;
+                case "hard":
+                    emptyCells = 60;
+                    break;
+                default:
+                    System.out.println("Invalid level. Defaulting to easy.");
+                    emptyCells = 20;
             }
 
-            try {
-                String[] parts = input.split(" ");
-                int row = Integer.parseInt(parts[0]) - 1;
-                int col = Integer.parseInt(parts[1]) - 1;
-                int num = Integer.parseInt(parts[2]);
+            int[][] board = generateBoard(emptyCells);
+            printBoard(board);
 
-                if (isValidMove(board, row, col, num)) {
-                    board[row][col] = num;
-                    printBoard(board);
-                } else {
-                    System.out.println("Invalid move. Try again.");
+            while (!isSolved(board)) {
+                System.out.println("Enter your move (row column number), 'answer' to see the solution, or 'exit' to quit:");
+                String input = scanner.nextLine();
+
+                if (input.equalsIgnoreCase("exit")) {
+                    System.out.println("Goodbye!");
+                    break;
+                } else if (input.equalsIgnoreCase("answer")) {
+                    printBoard(solvedBoard);
+                    break;
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter row, column, and number separated by spaces.");
+
+                try {
+                    String[] parts = input.split(" ");
+                    int row = Integer.parseInt(parts[0]) - 1;
+                    int col = Integer.parseInt(parts[1]) - 1;
+                    int num = Integer.parseInt(parts[2]);
+
+                    if (isValidMove(board, row, col, num)) {
+                        board[row][col] = num;
+                        printBoard(board);
+                    } else {
+                        System.out.println("Invalid move. Try again.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter row, column, and number separated by spaces.");
+                }
             }
-        }
 
-        if (isSolved(board)) {
-            System.out.println("Congratulations! You solved the Sudoku puzzle.");
-        }
+            if (isSolved(board)) {
+                System.out.println("Congratulations! You solved the Sudoku puzzle.");
+            }
 
+            System.out.println("Would you like to play again? (yes/no)");
+            playAgain = scanner.nextLine().trim().equalsIgnoreCase("yes");
+
+        } while (playAgain);
+
+        System.out.println("Thanks for playing! Goodbye.");
         scanner.close();
     }
 
